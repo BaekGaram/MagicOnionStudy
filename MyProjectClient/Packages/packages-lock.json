@@ -22,7 +22,7 @@
       "hash": "a011c51ed65c9abc3151a7a408bc70d408352933"
     },
     "com.magiconion-myproject-server.shared": {
-      "version": "file:../../../UnityStudy/MyProjectServer/Shared/",
+      "version": "file:../../../MagicOnionStudy/MyProjectServer/Shared/",
       "depth": 0,
       "source": "local",
       "dependencies": {}
