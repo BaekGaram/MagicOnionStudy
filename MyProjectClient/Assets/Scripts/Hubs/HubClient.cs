@@ -31,6 +31,11 @@ public partial class HubClient : MonoBehaviourSingletonTemplate<HubClient>, IGam
         }
     }
     
+    public void OnJoin(string playerName, float x, float y, float z)
+    {
+        Debug.Log($"Player {player.Name} joined the game");
+    }
+    
     void OnDestroy()
     {
     

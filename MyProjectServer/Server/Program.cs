@@ -1,50 +1,43 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
+﻿using MagicOnion.Serialization;
+using MagicOnion.Serialization.MemoryPack;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
-
-Console.WriteLine("Hello, World!");
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
-        
-builder.WebHost.UseKestrel(options =>
+
+// http2 사용 처리 
+builder.WebHost.ConfigureKestrel(options =>
 {
+    // WORKAROUND: Accept HTTP/2 only to allow insecure HTTP/2 connections during development.
     options.ConfigureEndpointDefaults(endpointOptions =>
     {
         endpointOptions.Protocols = HttpProtocols.Http2;
     });
-            
-    // HTTP/1.1エンドポイントの設定
-    options.Listen(IPAddress.Parse("0.0.0.0"), 5000, listenOptions =>
-    {
-        listenOptions.Protocols = HttpProtocols.Http1;
-    });
-            
-    // HTTP/2 ,HTTPS エンドポイントの設定
-    options.Listen(IPAddress.Parse("0.0.0.0"), 5001, listenOptions =>
-    {
-        // --load-cert=true が指定されていたら証明書を読み込む
-        if (args.Any(arg => arg == "--load-cert=true"))
-        {
-            Console.WriteLine("load certificate");
-            listenOptions.UseHttps(new X509Certificate2("certificate/certificate.pfx","test"));
-        }
-    });
 });
-        
+
+MagicOnionSerializerProvider.Default = MemoryPackMagicOnionSerializerProvider.Instance;
+
+// MagicOnion depends on ASP.NET Core gRPC Service.
 builder.Services.AddGrpc();
-builder.Services.AddMagicOnion();
+builder.Services.AddMagicOnion(opt =>
+{
+    // todo : Thinking about how to use this feature.
+    //opt.GlobalStreamingHubFilters.Add<LogFilter>();
+});
 
 var app = builder.Build();
-        
-// テスト用のエンドポイント
-app.MapGet("/", () => "Hello World!");
-        
-// MagicOnionのエンドポイント
 app.MapMagicOnionService();
 
+var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+lifetime.ApplicationStarted.Register(() =>
+{
+    Console.Write("#### MagicOnionServer Start ####");
+});
+
+lifetime.ApplicationStopped.Register(() => { Console.Write("Server app has stopped."); });
+
+// 서버 시작 
 app.Run();

@@ -7,7 +7,6 @@ public class GamingHub: StreamingHubBase<IGamingHub, IGamingHubReceiver>, IGamin
 {
     protected override ValueTask OnConnected()
     {
-        
         Console.WriteLine($"[GamingHub:OnConnected] ConnectionId:{ConnectionId} is connected.");
         return ValueTask.CompletedTask;
     }

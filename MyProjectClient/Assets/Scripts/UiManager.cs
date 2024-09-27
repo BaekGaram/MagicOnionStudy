@@ -24,7 +24,7 @@ public class UiManager : MonoBehaviour
             Debug.LogError("Already connected to MagicOnion Hub");
             return;
         }
-        await HubClient.Instance.Connect("http://localhost:5001");
+        await HubClient.Instance.Connect("http://localhost:5000");
         _isConnected = true;
         
         Debug.LogError("Connected to MagicOnion Hub");
@@ -37,12 +37,13 @@ public class UiManager : MonoBehaviour
 
         // 큐브 오브젝트를 생성 (Instantiate)
         GameObject newCube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
-        
         // 생성된 큐브의 이름을 "New Cube"로 설정
         newCube.name = "New Cube";
         newCube.SetActive(true);
-
         // 콘솔에 메시지 출력
         Debug.Log("Cube created at position: " + spawnPosition);
+        
+        await HubClient.Instance.Connect()
+        
     }
 }
