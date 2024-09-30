@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,14 +6,12 @@ public class UiManager : MonoBehaviour
 {
     private bool _isConnected = false;
     
-    public GameObject cubePrefab; // 생성할 큐브 프리팹
     public InputField MessageField;
     public InputField NameField;
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {   
     }
 
     // Update is called once per frame
@@ -35,10 +34,18 @@ public class UiManager : MonoBehaviour
     
     public async void Join()
     {
-        var userName = NameField.text;
-        Debug.Log("Join userName : " + userName);
+        if (_isConnected == false)
+        {
+            Debug.Log("Not connected to MagicOnion Hub");
+            return;
+        }
         
-        HubClient.Instance.Join(userName);
+        var userName = NameField.text;
+        
+        await HubClient.Instance.Join(userName);
+
+        // userName 초기화 
+        GamePlayer.Instance.UserName.text = userName;
     }
     
     public async void SendMessage()
@@ -46,9 +53,9 @@ public class UiManager : MonoBehaviour
         var userName = NameField.text;
         var message = MessageField.text;
         
-        Debug.Log("Send Message userName : " + userName);
-        Debug.Log("Send Message message : " + message);
+        await HubClient.Instance.SendMessage(userName, message);
         
-        HubClient.Instance.SendMessage(userName, message);
+        // 메시지 
+        GamePlayer.Instance.Message.text = message;
     }
 }

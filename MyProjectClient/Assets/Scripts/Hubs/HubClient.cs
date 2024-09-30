@@ -35,25 +35,5 @@ public partial class HubClient : MonoBehaviourSingletonTemplate<HubClient>, IGam
     {
         Debug.Log($"Player {playerName} joined the game");
     }
-
-    public void OnForceClose()
-    {
-        Debug.Log($"[OnForceClose] errorCode");
-    }
-
-    public void OnSendReceiver(string message)
-    {
-        Debug.Log($"[OnSendReceiver] {message}");
-    }
-
-    public async void SendMessage(string userName, string message)
-    {
-        var resultString = await _hub.SendMessage(userName, message);
-        Debug.Log($"SendMessage result : {resultString}");
-    }
-
-    public async void Join(string userName)
-    {
-        await _hub.JoinAsync(userName);
-    }
+   
 }
