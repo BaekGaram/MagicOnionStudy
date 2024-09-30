@@ -34,7 +34,7 @@ app.MapMagicOnionService();
 var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
 lifetime.ApplicationStarted.Register(() =>
 {
-    Console.Write("#### MagicOnionServer Start ####");
+    Console.WriteLine("#### MagicOnionServer Start ####");
 });
 
 lifetime.ApplicationStopped.Register(() => { Console.Write("Server app has stopped."); });

@@ -1,26 +1,24 @@
 ﻿using System.Threading.Tasks;
 using MagicOnion;
-using MessagePack;
 
 namespace Shared.Interfaces
 {
+    /// <summary>
+    /// Server -> client definition
+    /// </summary>
     public interface IGamingHubReceiver
     {
-        void OnJoin(Player player);
-        void OnLeave(Player player);
-        void OnMove(Player player);
+        void OnSendReceiver(string message);
     }
     
+    /// <summary>
+    /// Client -> Server, packet processor
+    /// The server program must implement this interface.
+    /// </summary>
     public interface IGamingHub : IStreamingHub<IGamingHub, IGamingHubReceiver>
     {
-        ValueTask<Player[]> JoinAsync(string roomName, string userName);
+        ValueTask JoinAsync(string userName);
         ValueTask LeaveAsync();
-    }
-    
-    [MessagePackObject]
-    public class Player
-    {
-        [Key(0)]
-        public string Name { get; set; }
+        ValueTask <string> SendMessage(string userName, string message);
     }
 }

@@ -1,23 +1,36 @@
 using MagicOnion.Server.Hubs;
+using Server.Packets;
 using Shared.Interfaces;
+using Shared.Util;
 
 namespace Server.StreamingHub;
 
-public class GamingHub: StreamingHubBase<IGamingHub, IGamingHubReceiver>, IGamingHub
+public partial class GamingHub: StreamingHubBase<IGamingHub, IGamingHubReceiver>, IGamingHub
 {
+    private IGroup<IGamingHubReceiver> _gameRoom;
+    
     protected override ValueTask OnConnected()
     {
         Console.WriteLine($"[GamingHub:OnConnected] ConnectionId:{ConnectionId} is connected.");
         return ValueTask.CompletedTask;
     }
-    
-    public ValueTask<Player[]> JoinAsync(string roomName, string userName)
+
+    protected override ValueTask OnDisconnected()
     {
-        throw new NotImplementedException();
+        Console.WriteLine($"[GamingHub:OnDisconnected] ConnectionId:{ConnectionId} is disconnected.");
+        return ValueTask.CompletedTask;
     }
 
-    public ValueTask LeaveAsync()
+    private void BroadCast(string name, string message)
     {
-        throw new NotImplementedException();
+        var broadCastPacket = new BroadCastPacket()
+        {
+            Sender = name,
+            BroadCastMessage = message,
+        };
+        
+        _gameRoom.All.OnSendReceiver(broadCastPacket.ToJson());
+        
+        Console.WriteLine($"broadcast::{name}:{message}");
     }
 }
