@@ -1,4 +1,5 @@
 using Uitility;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GamePlayer : MonoBehaviourSingletonTemplate<GamePlayer>
@@ -9,8 +10,8 @@ public class GamePlayer : MonoBehaviourSingletonTemplate<GamePlayer>
     // Start is called before the first frame update
     void Start()
     {
-        UserName.text = "";
-        Message.text = "";
+        UserName = GameObject.Find("TXT_UserName").GetComponent<Text>();
+        Message = GameObject.Find("TXT_Message").GetComponent<Text>();
     }
 
     // Update is called once per frame
