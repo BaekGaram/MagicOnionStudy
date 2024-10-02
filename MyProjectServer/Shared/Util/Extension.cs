@@ -5,7 +5,7 @@ namespace Shared.Util
 {
     public static class Extension
     {
-        public static T ToObject<T>(this string jsonString)
+        public static T ToPacket<T>(this string jsonString)
         {
             try
             {

@@ -1,6 +1,7 @@
 using MagicOnion.Server.Hubs;
 using Server.Packets;
 using Shared.Interfaces;
+using Shared.Packets;
 using Shared.Util;
 
 namespace Server.StreamingHub;
@@ -26,7 +27,7 @@ public partial class GamingHub: StreamingHubBase<IGamingHub, IGamingHubReceiver>
         var broadCastPacket = new BroadCastPacket()
         {
             Sender = name,
-            BroadCastMessage = message,
+            Message = message,
         };
         
         _gameRoom.All.OnSendReceiver(broadCastPacket.ToJson());
