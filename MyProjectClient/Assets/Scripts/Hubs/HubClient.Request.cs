@@ -15,6 +15,4 @@ public partial class HubClient
     {
         await _hub.JoinAsync(userName);
     }
-
-    
 }

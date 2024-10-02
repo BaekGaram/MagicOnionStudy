@@ -1,15 +1,13 @@
 using System.Collections;
 using Uitility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GamePlayer : MonoBehaviourSingletonTemplate<GamePlayer>
 {
     public Text UserName;
     public Text Message;
-    
-    public float MoveSpeed = 50.0f;
+    private float MoveSpeed = 50.0f;
 
     void Awake()
     {
@@ -29,15 +27,6 @@ public class GamePlayer : MonoBehaviourSingletonTemplate<GamePlayer>
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(Vector3.forward * (MoveSpeed * Time.deltaTime));
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(Vector3.back * (MoveSpeed * Time.deltaTime));
-        }
-
         if (Input.GetKey(KeyCode.A))
         {
             transform.Translate(Vector3.left * (MoveSpeed * Time.deltaTime));
@@ -47,11 +36,11 @@ public class GamePlayer : MonoBehaviourSingletonTemplate<GamePlayer>
             transform.Translate(Vector3.right * (MoveSpeed * Time.deltaTime));
         }
 
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(Vector3.up * (MoveSpeed * Time.deltaTime));
         }
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.S))
         {
             transform.Translate(Vector3.down * (MoveSpeed * Time.deltaTime));
         } 

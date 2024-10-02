@@ -18,8 +18,12 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
     }
-    
+
+    /// <summary>
+    /// Initialize ui Fields
+    /// </summary>
     private void InitFields()
     {
         if (MessageField == null)
@@ -32,57 +36,79 @@ public class UiManager : MonoBehaviour
             NameField = GameObject.Find("Input_UserName").GetComponent<InputField>();
         }
     }
-
+    
+    /// <summary>
+    /// Client -> Server, Connect
+    /// </summary>
     public async void Connect()
     {
-        if (_isConnected)
-        {
-            MyLogger.Log("Already connected to MagicOnion Hub");
+        if (IsConnected() == true)
             return;
-        }
+
+        var serverUrl = "http://localhost:5000";
         
-        _isConnected = await HubClient.Instance.Connect("http://localhost:5000");
+        _isConnected = await HubClient.Instance.Connect(serverUrl);
         
-        MyLogger.Log($"Connected to MagicOnion Hub : {_isConnected}");
+        MyLogger.Log($"[Connection Result]:{_isConnected}, {serverUrl}");
     }
 
+    /// <summary>
+    /// Client -> server, Join Group
+    /// </summary>
     public async void Join()
     {
-        if (_isConnected == false)
-        {
-            MyLogger.Log("Not connected to MagicOnion Hub");
+        if (IsConnected() == false)
             return;
-        }
 
         var userName = NameField.text;
-        MyLogger.Log("Joining hub with userName: " + userName);
+        
+        GameManager.Instance.ShowGamePlayer(userName);
         
         await HubClient.Instance.Join(userName);
-        MyLogger.Log("Join complete");
-
-        GamePlayer.Instance.UserName.text = userName;
     }
 
+    /// <summary>
+    /// Client -> server, SendMessage
+    /// </summary>
     public async void SendMessage()
     {
         var userName = NameField.text;
         var message = MessageField.text;
 
         await HubClient.Instance.SendMessage(userName, message);
+        
         // 메시지 표시  
         StartCoroutine(GamePlayer.Instance.ShowMessage(message));
     }
-    
+
+    /// <summary>
+    /// Client -> server, disconnect
+    /// </summary>
     public async void Dispose()
     {
-        if (_isConnected == false)
-        {
-            MyLogger.Log("Not connected to MagicOnion Hub");
+        if (IsConnected() == false)
             return;
-        }
-
-        _isConnected = false;
         
         await HubClient.Instance.DisposeAsync();
+        
+        _isConnected = false;
+    }
+
+    /// <summary>
+    /// Connection Check
+    /// </summary>
+    /// <returns></returns>
+    private bool IsConnected()
+    {
+        if (_isConnected == true)
+        {
+            MyLogger.Log("Already Connected to Server");
+            return true;
+        }
+        else
+        {
+            MyLogger.Log("Not connected to Server");
+            return false;
+        }
     }
 }

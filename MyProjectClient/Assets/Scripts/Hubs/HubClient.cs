@@ -31,5 +31,4 @@ public partial class HubClient : MonoBehaviourSingletonTemplate<HubClient>, IGam
     {
         await _hub.DisposeAsync();
     }
-    
 }
