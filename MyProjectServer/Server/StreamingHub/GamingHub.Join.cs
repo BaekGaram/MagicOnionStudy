@@ -1,18 +1,20 @@
 using MagicOnion.Server.Hubs;
+using Shared;
 using Shared.Interfaces;
+using Shared.Packets;
 
 namespace Server.StreamingHub;
 
 public partial class GamingHub : StreamingHubBase<IGamingHub, IGamingHubReceiver>, IGamingHub
 {
-    public async ValueTask JoinAsync(string userName)
+    public async ValueTask<ResJoinPacket> JoinAsync(ReqJoinPacket req)
     {
         _gameRoom = await this.Group.AddAsync("GameRoom");
         
-        PlayerManager.Instance.AddPlayer(ConnectionId, userName);
+        PlayerManager.Instance.AddPlayer(ConnectionId, req.Username);
         
-        BroadCast("Server", $"{userName} is Joined..");
+        BroadCastNotification();
         
-        Console.WriteLine($"{userName}:{ConnectionId} is Joined..");
+        return await ValueTask.FromResult(new ResJoinPacket());
     }
 }

@@ -1,12 +1,14 @@
+using MemoryPack;
+
 namespace Shared.Packets
 {
-    public partial class ReqJoinPacket
+    [MemoryPackable]
+    public partial class ReqJoinPacket : BasePacket
     {
-        public string UserName { get; set; }
     }
 
-    public partial class ResJoinPacket
+    [MemoryPackable]
+    public partial class ResJoinPacket : BaseResponsePacket
     {
-        public int ErrorCode { get; set; }
     }
 }

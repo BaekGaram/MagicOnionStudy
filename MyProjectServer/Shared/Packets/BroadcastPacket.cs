@@ -1,18 +1,33 @@
+using System.Collections.Generic;
+using MemoryPack;
+
 namespace Shared.Packets
 {
-    public partial class BroadCastPacket
+    [MemoryPackable]
+    public partial class BroadCastPacket : BaseResponsePacket
     {
         public string Sender { get; set; }
         public string Message { get; set; }
     }
 
-    public partial class JoinNotificationPacket
+    [MemoryPackable]
+    public partial class NotificationPacket : BaseResponsePacket
     {
-        public string UserName { get; set; }
+        public string Sender { get; set; }
+        public string Message { get; set; }
+    }
+    
+    [MemoryPackable]
+    public partial class JoinNotiPacket : BaseResponsePacket
+    {
+        public List<PlayerInfo> Players { get; set; }
     }
 
-    public partial class LeaveNotificationPacket
+    [MemoryPackable]
+    public partial class PlayerInfo
     {
-        public string UserName { get; set; }
+        public string Username { get; set; }
+        public float X { get; set; }
+        public string Color { get; set; }
     }
 }

@@ -26,7 +26,7 @@ public partial class HubClient : MonoBehaviourSingletonTemplate<HubClient>, IGam
         return true;
     }
     
-    // Disconnect
+    // Disconnect, Client -> Server Disconnect
     public async Task DisposeAsync()
     {
         await _hub.DisposeAsync();

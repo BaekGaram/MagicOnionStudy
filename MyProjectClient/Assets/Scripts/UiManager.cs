@@ -62,8 +62,6 @@ public class UiManager : MonoBehaviour
 
         var userName = NameField.text;
         
-        GameManager.Instance.ShowGamePlayer(userName);
-        
         await HubClient.Instance.Join(userName);
     }
 
@@ -77,8 +75,7 @@ public class UiManager : MonoBehaviour
 
         await HubClient.Instance.SendMessage(userName, message);
         
-        // 메시지 표시  
-        StartCoroutine(GamePlayer.Instance.ShowMessage(message));
+       
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MagicOnion;
+using Shared.Packets;
 
 namespace Shared.Interfaces
 {
@@ -8,7 +9,8 @@ namespace Shared.Interfaces
     /// </summary>
     public interface IGamingHubReceiver
     {
-        void OnSendReceiver(string message);
+        void OnSendReceiver(BroadCastPacket packet);
+        void OnJoinNotificationReceiver(JoinNotiPacket packet);
     }
     
     /// <summary>
@@ -17,8 +19,8 @@ namespace Shared.Interfaces
     /// </summary>
     public interface IGamingHub : IStreamingHub<IGamingHub, IGamingHubReceiver>
     {
-        ValueTask JoinAsync(string userName);
         ValueTask LeaveAsync();
-        ValueTask <string> SendMessage(string userName, string message);
+        ValueTask<ResJoinPacket> JoinAsync(ReqJoinPacket req);
+        ValueTask <ResSendMessagePacket> SendMessage(ReqSendMessagePacket req);
     }
 }

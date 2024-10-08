@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
 using Shared.Packets;
-using Shared.Util;
-using Uitility;
 
 /// <summary>
 /// Client -> Server, Request Processor
@@ -10,14 +8,22 @@ public partial class HubClient
 {
     public async Task SendMessage(string userName, string message)
     {
-        var resultString = (string) await _hub.SendMessage(userName, message);
-
-        // var broadcastPacket = resultString.ToPacket<BroadCastPacket>();
-        // MyLogger.Log($"[SendMessage] {broadcastPacket.Message}");
+        var req = new ReqSendMessagePacket()
+        {
+            Username = userName,
+            Message = message,
+        };
+        
+        var res = await _hub.SendMessage(req);
     }
 
     public async Task Join(string userName)
     {
-        await _hub.JoinAsync(userName);
+        var req = new ReqJoinPacket()
+        {
+            Username = userName,
+        };
+
+        var res = await _hub.JoinAsync(req);
     }
 }

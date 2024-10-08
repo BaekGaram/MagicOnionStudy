@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: user name
+  m_Text: 
 --- !u!1 &5945061003243452831
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Message
+  m_Text: 
 --- !u!1 &6705006412884295076
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,4 +250,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UserName: {fileID: 3291519783365484200}
   Message: {fileID: 3637867000721940108}
-  MoveSpeed: 5
