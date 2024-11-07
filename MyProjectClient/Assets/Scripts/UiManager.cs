@@ -1,3 +1,4 @@
+using System;
 using Uitility;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class UiManager : MonoBehaviour
 
     public InputField MessageField;
     public InputField NameField;
+    public InputField IpField;
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +49,19 @@ public class UiManager : MonoBehaviour
 
         var serverUrl = "http://localhost:5000";
         
-        _isConnected = await HubClient.Instance.Connect(serverUrl);
+        if (IpField != null && string.IsNullOrEmpty(IpField.text))
+        {
+            serverUrl = $"http://{IpField.text}";
+        }
+        
+        _isConnected = await HubClient.Instance.ConnectAsync(serverUrl);
+
+        if (_isConnected)
+        {
+            Guid newGuid = Guid.NewGuid();
+            
+            await HubClient.Instance.JoinAsync(newGuid.ToString());
+        }
         
         MyLogger.Log($"[Connection Result]:{_isConnected}, {serverUrl}");
     }
@@ -57,12 +71,12 @@ public class UiManager : MonoBehaviour
     /// </summary>
     public async void Join()
     {
-        if (IsConnected() == false)
-            return;
+        // if (IsConnected() == false)
+        //     return;
 
         var userName = NameField.text;
         
-        await HubClient.Instance.Join(userName);
+     
     }
 
     /// <summary>
@@ -73,7 +87,7 @@ public class UiManager : MonoBehaviour
         var userName = NameField.text;
         var message = MessageField.text;
 
-        await HubClient.Instance.SendMessage(userName, message);
+        await HubClient.Instance.SendMessageAsync(userName, message);
         
        
     }

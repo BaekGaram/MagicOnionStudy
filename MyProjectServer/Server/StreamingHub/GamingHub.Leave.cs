@@ -8,7 +8,7 @@ public partial class GamingHub : StreamingHubBase<IGamingHub, IGamingHubReceiver
     public async ValueTask LeaveAsync()
     {
         await _gameRoom.RemoveAsync(this.Context);
-        var userName = PlayerManager.Instance.RemovePlayer(this.Context.ContextId);
-        BroadCast("Server", $"{userName} leaved..");
+        //var userName = PlayerManager.Instance.RemovePlayer(this.Context.ContextId);
+        //BroadCast("Server", $"{userName} leaved..");
     }
 }

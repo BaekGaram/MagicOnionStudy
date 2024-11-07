@@ -10,7 +10,7 @@ public partial class HubClient : MonoBehaviourSingletonTemplate<HubClient>, IGam
     private IGamingHub _hub;
 
     // Client -> Server Connect
-    public async Task<bool> Connect(string address)
+    public async Task<bool> ConnectAsync(string address)
     {
         var channel = GrpcChannelx.ForAddress($"{address}");
 
@@ -21,6 +21,19 @@ public partial class HubClient : MonoBehaviourSingletonTemplate<HubClient>, IGam
         {
             MyLogger.Log("Failed to connect to Hub");
             return false;
+        }
+        
+        _ = WaitForDisconnectEventAsync();
+        async Task WaitForDisconnectEventAsync()
+        {
+            var reason = await _hub.WaitForDisconnectAsync();
+            
+            MyLogger.Log("WaitForDisconnectEventAsync: " + reason.Type);
+            
+            if (reason.Type != DisconnectionType.CompletedNormally)
+            {
+                
+            }
         }
         
         return true;
